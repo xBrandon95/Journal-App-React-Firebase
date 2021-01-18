@@ -21,7 +21,12 @@ export const NoteScreen = () => {
   }, [note, reset]);
 
   useEffect(() => {
-    dispatch(activeNote(formValues.id, { ...formValues }));
+    if (!note.url) {
+      dispatch(activeNote(formValues.id, { ...formValues }));
+    } else {
+      dispatch(activeNote(formValues.id, { ...formValues, url: note.url }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues, dispatch]);
 
   const handleDelete = () => {
