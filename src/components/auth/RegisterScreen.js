@@ -4,17 +4,20 @@ import { useForm } from "../../hooks/useForm";
 import validator from "validator";
 import { useDispatch, useSelector } from "react-redux";
 import { removeErrorAction, setErrorAction } from "../../actions/uiActions";
-import { startRegisterWithEmailPasswordName } from "../../actions/authActions";
+import {
+  startGoogleLogin,
+  startRegisterWithEmailPasswordName,
+} from "../../actions/authActions";
 
 export const RegisterScreen = () => {
   const dispatch = useDispatch();
   const { msgError } = useSelector((state) => state.ui);
 
   const [formValues, handleInputChange] = useForm({
-    name: "Brandon",
-    email: "brandon@gmail.com",
-    password: "123456",
-    password2: "123456",
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
   });
 
   const { name, email, password, password2 } = formValues;
@@ -25,6 +28,10 @@ export const RegisterScreen = () => {
     if (isFormValid()) {
       dispatch(startRegisterWithEmailPasswordName(email, password, name));
     }
+  };
+
+  const handleGoogleLogin = () => {
+    dispatch(startGoogleLogin());
   };
 
   const isFormValid = () => {
@@ -51,7 +58,10 @@ export const RegisterScreen = () => {
   return (
     <>
       <h3 className="auth__title">REGISTRATE</h3>
-      <form onSubmit={handleRegister}>
+      <form
+        onSubmit={handleRegister}
+        className="animate__animated animate__fadeIn animate__faster"
+      >
         {msgError && <div className="auth__alert-error center">{msgError}</div>}
 
         <input
@@ -94,6 +104,22 @@ export const RegisterScreen = () => {
         <button type="submit" className="btn btn-primary btn-block mb-5">
           Crear cuenta
         </button>
+
+        <div className="auth__social-networks" onClick={handleGoogleLogin}>
+          <p>o registrate con:</p>
+          <div className="google-btn">
+            <div className="google-icon-wrapper">
+              <img
+                className="google-icon"
+                src="/img/Google__G__Logo.svg"
+                alt="google button"
+              />
+            </div>
+            <p className="btn-text">
+              <b>Registrarse con Google</b>
+            </p>
+          </div>
+        </div>
 
         <Link to="/auth/login" className="link mt-5">
           ¿Ya tienes cuenta?
